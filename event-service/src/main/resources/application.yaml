@@ -1,0 +1,14 @@
+spring:
+  application:
+    name: event-service
+  datasource:
+    url: jdbc:mysql://localhost:3306/event_management_db
+    username: root
+    password: password
+  jpa: 
+    database-platform: org.hibernate.dialect.MySQLDialect
+    hibernate: 
+      ddl-auto: update
+    show-sql: true
+server:
+  port: 8080
