@@ -5,8 +5,6 @@ import com.unir.event.event_service.domain.dtos.EventDTO;
 import java.util.List;
 import java.util.Optional;
 
-import org.springframework.http.ResponseEntity;
-
 public interface IEventService {
     
 
@@ -14,9 +12,10 @@ public interface IEventService {
 
     Optional<EventDTO> findById(Long id);
 
-    Optional<List<EventDTO>> findByTitle(String title);
+    List<EventDTO> findByTitle(String title);
 
     EventDTO save(EventDTO event);
+    EventDTO update(Long id, EventDTO event);
 
-    ResponseEntity<Void> delete(Long id);
+    boolean delete(Long id);
 }

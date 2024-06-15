@@ -10,7 +10,7 @@ import java.util.Date;
 
 @Entity
 @Data
-public class Event {
+public class EventEntity {
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long id;

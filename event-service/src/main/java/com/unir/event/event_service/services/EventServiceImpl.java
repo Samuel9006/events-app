@@ -2,44 +2,73 @@ package com.unir.event.event_service.services;
 
 import com.unir.event.event_service.domain.dtos.EventDTO;
 
-import org.springframework.http.ResponseEntity;
+import com.unir.event.event_service.domain.entities.EventEntity;
+import com.unir.event.event_service.domain.mapper.EventMapper;
+import com.unir.event.event_service.domain.repositories.EventRepository;
+import lombok.AllArgsConstructor;
 import org.springframework.stereotype.Service;
 
 import java.util.List;
 import java.util.Optional;
 
 @Service
+@AllArgsConstructor
 public class EventServiceImpl implements IEventService{
 
-    
+
+    private EventRepository eventRepository;
+    private EventMapper eventMapper;
+
     @Override
     public List<EventDTO> findAll() {
-        // TODO Auto-generated method stub
-        throw new UnsupportedOperationException("Unimplemented method 'findAll'");
+        List<EventEntity> allEvents = (List<EventEntity>) this.eventRepository.findAll();
+        return this.eventMapper.toEventsDto(allEvents);
     }
 
     @Override
     public Optional<EventDTO> findById(Long id) {
-        // TODO Auto-generated method stub
-        throw new UnsupportedOperationException("Unimplemented method 'findById'");
+        return this.eventRepository.findById(id).map(eventMapper::toEventDto);
     }
 
     @Override
-    public Optional<List<EventDTO>> findByTitle(String title) {
-        // TODO Auto-generated method stub
-        throw new UnsupportedOperationException("Unimplemented method 'findByTitle'");
+    public List<EventDTO> findByTitle(String title) {
+        List<EventEntity> byTitle = this.eventRepository.findByTitle(title);
+        return this.eventMapper.toEventsDto(byTitle);
     }
 
     @Override
     public EventDTO save(EventDTO event) {
-        // TODO Auto-generated method stub
-        throw new UnsupportedOperationException("Unimplemented method 'save'");
+        EventEntity eventSaved = this.eventRepository.save(this.eventMapper.toEvent(event));
+        return this.eventMapper.toEventDto(eventSaved);
     }
 
     @Override
-    public ResponseEntity<Void> delete(Long id) {
-        // TODO Auto-generated method stub
-        throw new UnsupportedOperationException("Unimplemented method 'delete'");
+    public EventDTO update(Long id, EventDTO eventDto) {
+        Optional<EventEntity> optionalEvent = this.eventRepository.findById(id);
+        if (optionalEvent.isPresent()) {
+            EventEntity eventEntity = optionalEvent.get();
+            eventEntity.setTitle(eventDto.getEventTitle());
+            eventEntity.setDescription(eventDto.getDescription());
+            eventEntity.setDate(eventDto.getEventDate());
+            eventEntity.setLocation(eventDto.getEventLocation());
+
+            EventEntity eventUpdated = this.eventRepository.save(eventEntity);
+            return this.eventMapper.toEventDto(eventUpdated);
+        }else{
+            return null;
+        }
+
+    }
+
+    @Override
+    public boolean delete(Long id) {
+        if (eventRepository.findById(id).isPresent()) {
+            eventRepository.deleteById(id);
+            return true;
+        } else {
+            return false;
+        }
+
     }
 
     
