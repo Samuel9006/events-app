@@ -5,6 +5,7 @@ import jakarta.validation.constraints.NotNull;
 import lombok.Data;
 
 import java.util.Date;
+import java.util.Set;
 
 @Data
 public class EventDTO {
@@ -19,4 +20,5 @@ public class EventDTO {
     private Date eventDate;
     @NotEmpty
     private String eventLocation;
+    private Set<Long> participantIds;
 }

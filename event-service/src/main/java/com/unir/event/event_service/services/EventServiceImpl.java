@@ -51,7 +51,7 @@ public class EventServiceImpl implements IEventService{
             eventEntity.setDescription(eventDto.getDescription());
             eventEntity.setDate(eventDto.getEventDate());
             eventEntity.setLocation(eventDto.getEventLocation());
-
+            eventEntity.setParticipantIds(eventDto.getParticipantIds());
             EventEntity eventUpdated = this.eventRepository.save(eventEntity);
             return this.eventMapper.toEventDto(eventUpdated);
         }else{
