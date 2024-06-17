@@ -13,6 +13,8 @@ import lombok.Data;
 @Data
 public class ParticipantDTO {
 
+    private Long id;
+
     @NotEmpty(message = "Name is mandatory")
     @Size(max = 100, message = "Name must be less than 100 characters")
     private String name;
