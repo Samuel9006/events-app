@@ -26,11 +26,20 @@ public class EventController {
 
     private IEventService eventService;
 
+    /**
+     * Retrieves all events.
+     * @return a list of all events.
+     */
     @GetMapping
     public ResponseEntity<List<EventDTO>> getAllEvents() {
         return new ResponseEntity<>(eventService.findAll(), HttpStatus.OK);
     }
 
+    /**
+     * Retrieves a event by ID.
+     * @param id the ID of the event to retrieve.
+     * @return the event with the given ID.
+     */
     @GetMapping("/{id}")
     public ResponseEntity<EventDTO> getEventById(@PathVariable Long id) {
         return eventService.findById(id)
@@ -38,6 +47,11 @@ public class EventController {
         .orElseGet(() -> ResponseEntity.notFound().build());
     }
 
+    /**
+     * Retrieves a list of events by title.
+     * @param title the title of the events to retrieve.
+     * @return the list of events with the given title.
+     */
     @GetMapping("/search")
     public ResponseEntity<List<EventDTO>> getEventsByTitle(@RequestParam String title) {
         if (eventService.findByTitle(title).isEmpty()){
@@ -47,11 +61,22 @@ public class EventController {
         }
     }
 
+    /**
+     * Creates a new event.
+     * @param event the DTO of the event to create.
+     * @return the created event.
+     */
     @PostMapping
     public ResponseEntity<EventDTO> createEvent(@Valid @RequestBody EventDTO event) {
         return new ResponseEntity<>(eventService.save(event), HttpStatus.CREATED);
     }
 
+    /**
+     * Updates an existing event.
+     * @param id the ID of the event to update.
+     * @param eventDetails the DTO of the updated event.
+     * @return the updated event.
+     */
     @PutMapping("/{id}")
     public ResponseEntity<EventDTO> updateEvent(@PathVariable Long id, @RequestBody EventDTO eventDetails) {
         EventDTO updatedEvent = this.eventService.update(id, eventDetails);
@@ -63,6 +88,11 @@ public class EventController {
 
     }
 
+    /**
+     * Deletes a event by ID.
+     * @param id the ID of the event to delete.
+     * @return a response indicating the outcome of the deletion.
+     */
     @DeleteMapping("/{id}")
     public ResponseEntity<Void> deleteEvent(@PathVariable Long id) {
         boolean deleted = this.eventService.delete(id);
